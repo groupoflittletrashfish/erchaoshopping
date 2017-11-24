@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.ItemDao">
+    <resultMap id="itemMap" type="entity.Item">
+        <result property="id" column="id"></result>
+        <result property="price" column="price"></result>
+        <result property="taobaoId" column="taobao_id"></result>
+        <result property="title" column="title"></result>
+        <result property="propertiesNames" column="properties_names"></result>
+        <result property="created" column="created"></result>
+        <result property="modified" column="modified"></result>
+        <result property="repertory" column="repertory"></result>
+    </resultMap>
+
+
+    <select id="allItems" resultMap="itemMap">
+        select * from item
+    </select>
+</mapper>

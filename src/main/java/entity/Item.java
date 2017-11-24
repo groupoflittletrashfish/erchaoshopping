@@ -3,17 +3,23 @@ package entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Order implements Serializable{
+public class Item implements Serializable{
     private Long id;
-    private Long tid;
-    private Long taobaoId;
-    private Long numIid;
-    private Integer num;
     private Float price;
+    private Long taobaoId;
     private String title;
-    private String status;
+    private String propertiesNames;
     private Timestamp created;
     private Timestamp modified;
+    private Long repertory;
+
+    public Long getRepertory() {
+        return repertory;
+    }
+
+    public void setRepertory(Long repertory) {
+        this.repertory = repertory;
+    }
 
     public Long getId() {
         return id;
@@ -21,38 +27,6 @@ public class Order implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getTid() {
-        return tid;
-    }
-
-    public void setTid(Long tid) {
-        this.tid = tid;
-    }
-
-    public Long getTaobaoId() {
-        return taobaoId;
-    }
-
-    public void setTaobaoId(Long taobaoId) {
-        this.taobaoId = taobaoId;
-    }
-
-    public Long getNumIid() {
-        return numIid;
-    }
-
-    public void setNumIid(Long numIid) {
-        this.numIid = numIid;
-    }
-
-    public Integer getNum() {
-        return num;
-    }
-
-    public void setNum(Integer num) {
-        this.num = num;
     }
 
     public Float getPrice() {
@@ -63,6 +37,14 @@ public class Order implements Serializable{
         this.price = price;
     }
 
+    public Long getTaobaoId() {
+        return taobaoId;
+    }
+
+    public void setTaobaoId(Long taobaoId) {
+        this.taobaoId = taobaoId;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -71,12 +53,12 @@ public class Order implements Serializable{
         this.title = title;
     }
 
-    public String getStatus() {
-        return status;
+    public String getPropertiesNames() {
+        return propertiesNames;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPropertiesNames(String propertiesNames) {
+        this.propertiesNames = propertiesNames;
     }
 
     public Timestamp getCreated() {
@@ -97,15 +79,12 @@ public class Order implements Serializable{
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "Item{" +
                 "id=" + id +
-                ", tid=" + tid +
-                ", taobaoId=" + taobaoId +
-                ", numIid=" + numIid +
-                ", num=" + num +
                 ", price=" + price +
+                ", taobaoId=" + taobaoId +
                 ", title='" + title + '\'' +
-                ", status='" + status + '\'' +
+                ", propertiesNames='" + propertiesNames + '\'' +
                 ", created=" + created +
                 ", modified=" + modified +
                 '}';

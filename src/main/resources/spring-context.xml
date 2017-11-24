@@ -23,6 +23,10 @@
     <context:component-scan base-package="controller"><!-- base-package 如果多个，用“,”分隔 -->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
+    <!--<context:component-scan base-package="service" use-default-filters="false">-->
+        <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
+        <!--<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>-->
+    <!--</context:component-scan>-->
 
     <!--<!– 自动扫描 –>-->
     <!--<context:component-scan base-package="com.vitelon.v"/>-->
@@ -82,6 +86,7 @@
     <!-- 对dataSource 数据源进行事务管理 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"></property>
+        <property name="rollbackOnCommitFailure" value="true"></property>
     </bean>
 
     <!-- 事务管理 通知 -->
@@ -107,7 +112,7 @@
 
     <!-- 事务 aop 配置 -->
     <aop:config>
-        <aop:pointcut id="serviceMethods" expression="execution(public * service..*(..))" />
+        <aop:pointcut id="serviceMethods" expression="execution(public * service..*.*(..))" />
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
     </aop:config>
 
@@ -116,4 +121,8 @@
 
     <!-- 配置 Annotation 驱动，扫描@Transactional注解的类定义事务  -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+    <bean id="txManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
 </beans>

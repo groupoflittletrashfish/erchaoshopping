@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class Trade implements Serializable {
-    private long id;
-    private long tabobaoId;
-    private long tid;
+    private Long id;
+    private Long taobaoId;
+    private Long tid;
     private String buyerNick;
-    private float payment;
+    private Float payment;
     private String status;
     private String receiverAddress;
     private String receiverMobile;
@@ -16,29 +16,29 @@ public class Trade implements Serializable {
     private Timestamp modified;
     private String receiverName;
     private String sellerMemo;
-    private float discountFee;
+    private Float discountFee;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getTabobaoId() {
-        return tabobaoId;
+    public Long getTabobaoId() {
+        return taobaoId;
     }
 
-    public void setTabobaoId(long tabobaoId) {
-        this.tabobaoId = tabobaoId;
+    public void setTabobaoId(Long tabobaoId) {
+        this.taobaoId = tabobaoId;
     }
 
-    public long getTid() {
+    public Long getTid() {
         return tid;
     }
 
-    public void setTid(long tid) {
+    public void setTid(Long tid) {
         this.tid = tid;
     }
 
@@ -50,11 +50,11 @@ public class Trade implements Serializable {
         this.buyerNick = buyerNick;
     }
 
-    public float getPayment() {
+    public Float getPayment() {
         return payment;
     }
 
-    public void setPayment(float payment) {
+    public void setPayment(Float payment) {
         this.payment = payment;
     }
 
@@ -114,19 +114,20 @@ public class Trade implements Serializable {
         this.sellerMemo = sellerMemo;
     }
 
-    public float getDiscountFee() {
+    public Float getDiscountFee() {
         return discountFee;
     }
 
-    public void setDiscountFee(float discountFee) {
+    public void setDiscountFee(Float discountFee) {
         this.discountFee = discountFee;
     }
+
 
     @Override
     public String toString() {
         return "Trade{" +
                 "id=" + id +
-                ", tabobaoId=" + tabobaoId +
+                ", tabobaoId=" + taobaoId +
                 ", tid=" + tid +
                 ", buyerNick='" + buyerNick + '\'' +
                 ", payment=" + payment +
@@ -141,3 +142,4 @@ public class Trade implements Serializable {
                 '}';
     }
 }
+

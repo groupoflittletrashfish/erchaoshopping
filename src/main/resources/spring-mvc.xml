@@ -55,12 +55,12 @@
     </bean>
 
 
-    <!-- 配置springMVC处理上传文件的信息 -->
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="defaultEncoding" value="utf-8" />
-        <property name="maxUploadSize" value="10485760000" />
-        <property name="maxInMemorySize" value="40960" />
-    </bean>
+    <!--&lt;!&ndash; 配置springMVC处理上传文件的信息 &ndash;&gt;-->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+        <!--<property name="defaultEncoding" value="utf-8" />-->
+        <!--<property name="maxUploadSize" value="10485760000" />-->
+        <!--<property name="maxInMemorySize" value="40960" />-->
+    <!--</bean>-->
 
     <!-- Bean解析器,级别高于默认解析器,寻找bean对象进行二次处理 -->
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0"/>

@@ -100,19 +100,17 @@
         #body {
             background-color: #EDEDED;
             /*border: 1px solid red;*/
-            height: 100%;
             z-index: 1;
         }
 
         #myframe {
             width: 100%;
-            height: 100%;
-            border: 0px;
             padding: 5px;
+            /*background-color: #449d44;*/
+            /*border: 10px solid red;*/
         }
 
-
-        #sha{
+        #sha {
             position: fixed;
             border: 1px solid blue;
             width: 100%;
@@ -124,27 +122,38 @@
             z-index: 1;
         }
 
-        #myModel>iframe {
+        #myModel > iframe {
             position: fixed;
             top: 50%;
             left: 50%;
-            border:0px;
+            border: 0px;
             z-index: 2;
             box-shadow: 1px 1px 1px 1px black;
             opacity: 1;
         }
 
-        #myModel{
+        #myModel {
             display: none;
         }
 
 
-
     </style>
+    <script type="text/javascript" src="plugs/js/jquery-3.2.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/webuploader.css">
+    <script type="text/javascript" src="static/js/webuploader.js"></script>
 </head>
-<script type="text/javascript" src="plugs/js/jquery-3.2.1.js"></script>
+
 
 <body>
+
+<%--<form action="http://localhost:8084/erchao/order/aaa" method="POST" enctype="multipart/form-data">--%>
+    <%--<input type="file" multiple="multiple" name="files" />--%>
+    <%--<br />--%>
+    <%--<br />--%>
+    <%--<input type="submit" value="提交" />--%>
+<%--</form>--%>
+
+
 <div id="head">
     <a id="shoppingname" href="javascript:void(0)">二超的小店</a>
     <div id="menus"></div>
@@ -160,6 +169,7 @@
 </body>
 <script>
     $(function () {
+        $('#myframe').height(parseInt($(document.body).height()) - 55);
         loadMainMenus();
     })
 
@@ -203,18 +213,35 @@
         $('#myframe').attr('src', url);
     }
 
-    function newWin(width, height,url) {
+    function newWin(width, height, url) {
         $('#myModel').show();
         $('#myModel>iframe').width(width + 'px');
         $('#myModel>iframe').height(height + 'px');
         $('#myModel>iframe').css('margin-left', parseInt(width) / 2 * (-1));
         $('#myModel>iframe').css('margin-top', parseInt(height) / 2 * (-1));
-        $('#myModel>iframe').attr('src',url);
+        $('#myModel>iframe').attr('src', url);
     }
 
 
-    function hideModel(){
+    function hideModel() {
         $('#myModel').hide();
+        $('#myModel>iframe').attr('src', '');
+    }
+
+    function changeHeight(height) {
+        $("#myModel>iframe").animate({
+            height: height,
+            marginTop: parseInt(height) / 2 * (-1)
+        }, 'slow');
+    }
+
+    function getMyFrameHeight() {
+        return $('#myframe').height();
+    }
+
+    function getModelHeight() {
+        return $('#myModel>iframe').height();
+
     }
 
 

@@ -2,25 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="dao.OrderDao">
-    <select id="orderList" parameterType="java.util.Map" resultType="entity.Order">
-        select id,order_num as orderNum,wangwang,address,reality_pay as realityPay,create_time as createTime from orderinfo where 1=1
-        <if test="query!=null and type=='search'">
-            and ((order_num like concat('%',#{query},'%')) or(wangwang like concat('%',#{query},'%')))
-        </if>
-        <if test="query!=null and type=='condition'">
-           and ${query}
-        </if>
-        order by create_time desc limit #{limit},#{offset}
+    <resultMap id="orderMap" type="entity.Order">
+        <result property="id" column="id" />
+        <result property="tid" column="tid" />
+        <result property="taobaoId" column="taobao_id" />
+        <result property="numIid" column="num_iid" />
+        <result property="price" column="price"/>
+        <result property="num" column="num" />
+        <result property="title" column="title" />
+        <result property="status" column="status" />
+        <result property="created" column="created" />
+        <result property="modified" column="modified" />
+    </resultMap>
+
+    <select id="orderList" parameterType="java.util.Map" resultType="entity.Trade">
+        select distinct trade.id,trade.taobao_id as taobaoId,trade.tid,trade.buyer_nick as buyerNick,trade.payment,trade.status,trade.receiver_address as receiverAddress,trade.receiver_mobile as receiverMobile,
+        trade.created,trade.modified,trade.receiver_name as receiverName,trade.seller_memo as sellerMemo,trade.discount_fee as discountFee from trade trade join orderinfo as info on info.tid=trade.id
+        where 1=1
+        <if test="start!='' and end!='' and strat!=null and end!=null">and trade.created between #{start}and #{end}</if>
+        <if test="receiveman!=null">and trade.receiver_name like concat('%',#{receiveman},'%')</if>
+        <if test="receivetele!=null">and trade.receiver_mobile like concat('%',#{receivetele},'%')</if>
+        <if test="address!=null">and trade.receiver_address like concat('%',#{address},'%')</if>
+        <if test="order!=null">and info.title like concat('%',#{order},'%')</if>
+        <if test="tid!=null">and trade.tid=#{tid}</if>
+        order by trade.created desc
     </select>
 
     <select id="allOrders" resultType="int" parameterType="string">
-        select count(1) from orderinfo where 1=1
-        <if test="query!=null and type=='search'">
-            and ((order_num like concat('%',#{query},'%')) or(wangwang like concat('%',#{query},'%')))
-        </if>
-        <if test="query!=null and type=='condition'">
-           and ${query}
-        </if>
+        select count(1) from trade where 1=1
+
     </select>
 
     <select id="isExist" parameterType="string" resultType="int">
@@ -30,4 +40,73 @@
     <update id="updateOrder" parameterType="entity.Order">
         update orderinfo set order_num =#{orderNum},wangwang=#{wangwang},address=#{address},reality_pay=#{realityPay},create_time=#{createTime} where id=#{id}
     </update>
+
+    <select id="getOrderByTradeId" parameterType="long" resultMap="orderMap">
+        select * from orderinfo where tid=#{_parameter}
+    </select>
+
+    <select id="allItems" resultType="entity.Item">
+        select id,price,taobao_id as taobaoId,title,properties_names propertiesNames,created,modified from item
+    </select>
+
+    <insert id="insertTrade" parameterType="entity.Trade">
+        insert into trade (taobao_id,tid,buyer_nick,payment,status,receiver_address,receiver_mobile,created,modified,receiver_name,seller_memo,discount_fee)
+        values(#{taobaoId},#{tid},#{buyerNick},#{payment},#{status},#{receiverAddress},#{receiverMobile},#{created},#{modified},#{receiverName},#{sellerMemo},#{discountFee})
+            <selectKey resultType="Long" keyProperty="id">
+                select LAST_INSERT_ID() as value
+            </selectKey>
+    </insert>
+
+    <insert id="insertOrder" parameterType="entity.Order">
+        insert into orderinfo (tid,taobao_id,num_iid,num,price,title,status,created,modified) values(#{tid},#{taobaoId},#{numIid},#{num},#{price},#{title},#{status},#{created},#{modified})
+    </insert>
+
+    <select id="getItemById" parameterType="Long" resultType="entity.Item">
+        select id,price,taobao_id taobaoId,title,properties_names propertiesNames,created,modified from item where id=#{id}
+    </select>
+
+    <delete id="batchDelete" parameterType="Long[]">
+        delete from trade
+        <where>
+            tid in
+            <foreach collection="array" open="(" close=")" separator="," item="id">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="batchSelectTradeId" parameterType="Long[]" resultType="Long">
+        select id from trade
+        <where>
+            tid in
+            <foreach collection="array" item="tid" open="(" close=")" separator=",">
+                #{tid}
+            </foreach>
+        </where>
+    </select>
+
+    <delete id="batchDeleteOrders" parameterType="Long[]">
+        delete from orderinfo
+            <where>
+                tid in
+                <foreach collection="array" item="tid" open="(" close=")" separator=",">
+                    #{tid}
+                </foreach>
+            </where>
+    </delete>
+
+    <select id="selectTradeById" parameterType="Long" resultType="entity.Trade">
+        select id,taobao_id taobaoId,tid,buyer_nick buyerNick,payment,status,receiver_address receiverAddress,receiver_mobile receiverMobile,
+        created,modified,receiver_name receiverName,seller_memo sellerMemo,discount_fee discountFee from trade where tid=#{tid}
+    </select>
+
+    <update id="updateTrade" parameterType="entity.Trade">
+        update trade set taobao_id='123456789',buyer_nick =#{buyerNick},payment=#{payment},status=#{status},receiver_address=#{receiverAddress},receiver_mobile=#{receiverMobile},
+        receiver_name =#{receiverName},seller_memo =#{sellerMemo},discount_fee =#{discountFee} where tid=#{tid}
+    </update>
+
+    <delete id="deleteOrderByTid" parameterType="Long">
+        delete from orderinfo where tid=#{tid}
+    </delete>
+
 </mapper>
